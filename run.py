@@ -78,13 +78,16 @@ def get_string(question):
     the loop will print an error message and request input again.
     Also removes extra whitespace from strings.
     """
+    lines_to_delete = 2
     while True:
         input_string = input(f"{question}\n")
         input_string = " ".join(input_string.split())
         if input_string.strip() == "":
             input_string = ""
         if not input_string:
+            delete_line(lines_to_delete)
             print("Please input something rather than nothing.")
+            lines_to_delete = 3
         else:
             return input_string
 
@@ -139,6 +142,7 @@ def make_choice(choice_list):
     If the user inputs an invalid choice, they are asked again.
     Once the user inputs a valid choice, that choice is returned.
     """
+    lines_to_delete = 2
     for numbered_choice in choice_list:
         print(numbered_choice)
     choice_num = len(choice_list)
@@ -153,7 +157,9 @@ def make_choice(choice_list):
             choice_made = True
             choice_final = "2"
         else:
+            delete_line(lines_to_delete)
             p_d("Please choose option 1 or 2.")
+            lines_to_delete = 3
     while not choice_made and choice_num == 3:
         user_input_3 = get_string("")
         if user_input_3 == "1":
@@ -166,7 +172,9 @@ def make_choice(choice_list):
             choice_made = True
             choice_final = "3"
         else:
+            delete_line(lines_to_delete)
             p_d("Please choose option 1, 2, or 3.")
+            lines_to_delete = 3
     while not choice_made and choice_num == 4:
         user_input_4 = get_string("")
         if user_input_4 == "1":
@@ -182,7 +190,9 @@ def make_choice(choice_list):
             choice_made = True
             choice_final = "4"
         else:
+            delete_line(lines_to_delete)
             p_d("Please choose option 1, 2, 3, or 4.")
+            lines_to_delete = 3
     return choice_final
 
 
@@ -237,15 +247,16 @@ def change_speed():
         ]
     speed_answer = make_choice(speed_options)
     if speed_answer == "1":
-        p_d("Change accepted.")
+        p_d("Acknowledged.")
         game["text_speed"] = 4.0
     elif speed_answer == "2":
-        p_d("Speed unchanged.")
+        p_d("Acknowledged.")
+        game["text_speed"] = 2.0
     elif speed_answer == "3":
-        p_d("Change accepted.")
+        p_d("Acknowledged.")
         game["text_speed"] = 1.0
     elif speed_answer == "4":
-        p_d("Change accepted.")
+        p_d("Acknowledged.")
         game["text_speed"] = 0.1
 
 
@@ -281,10 +292,28 @@ def new_savegame():
 
     Use of enumerate from Mike Hordecki:
     https://stackoverflow.com/a/522578/18794218
+    Loading animation inspired by AKX, LPby, and Warren:
+    https://stackoverflow.com/a/7039175/18794218
     """
+    progress_bar = [
+        "─•✧✵✧•───────────",
+        "───•✧✵✧•─────────",
+        "─────•✧✵✧•───────",
+        "───────•✧✵✧•─────",
+        "─────────•✧✵✧•───",
+        "───────────•✧✵✧•─",
+        "─────────•✧✵✧•───",
+        "───────•✧✵✧•─────",
+        "─────•✧✵✧•───────",
+        "───•✧✵✧•─────────"
+        ]
+    i = 0
     row_to_fill = next_available_row()
     game_values = list(game.values())
     for index, value in enumerate(game_values):
+        print(progress_bar[i % len(progress_bar)], end="\r")
+        sleep(.2)
+        i += 1
         SAVES.update_cell(row_to_fill, index+1, value)
 
 
@@ -332,12 +361,29 @@ def save_game():
     Use of enumerate from Mike Hordecki:
     https://stackoverflow.com/a/522578/18794218
     """
+    progress_bar = [
+        "─•✧✵✧•───────────",
+        "───•✧✵✧•─────────",
+        "─────•✧✵✧•───────",
+        "───────•✧✵✧•─────",
+        "─────────•✧✵✧•───",
+        "───────────•✧✵✧•─",
+        "─────────•✧✵✧•───",
+        "───────•✧✵✧•─────",
+        "─────•✧✵✧•───────",
+        "───•✧✵✧•─────────"
+        ]
+    i = 0
     username = game["name"]
     name_cell = SAVES.find(username)
     name_row = name_cell.row
     game_values = list(game.values())
     for index, value in enumerate(game_values):
+        print(progress_bar[i % len(progress_bar)], end="\r")
+        sleep(.2)
+        i += 1
         SAVES.update_cell(name_row, index+1, value)
+    p_d("───FILE UPDATED───\n")
 
 
 # The following functions can be called by start_game to disply information.
@@ -429,7 +475,6 @@ def opening_scene():
     Called from within start_game to begin the story proper.
     """
     name = game["name"]
-    p_d("MISSION START...\n")
     print("┌───── •✧✵✧• ─────┐")
     print("  DAY 1: MIDNIGHT ")
     p_d("└───── •✧✵✧• ─────┘\n")
@@ -634,9 +679,9 @@ def opening_scene():
             game["try_to_flee"] = 1  # You won't be able to escape yet.
         p_d("“I see I have no choice. As you wish, Prefect.”\n")
         p_d("“It didn’t have to come to this, Adjunct,” she says.")
-        p_d("“You could have cooperated freely.”\n")
+        p_d("“You could have cooperated freely.”")
         p_d("Ah, yes. That’s what freedom means, isn’t it?")
-        p_d("The freedom to serve the Khell. Nothing else.")
+        p_d("Freedom to serve the Khell. Nothing else.")
         p_d("She continues: “Some guards will escort you home.")
         p_d("And back here at noon. Don’t think you can escape your duty.”\n")
         if game["try_to_flee"]:  # Because you want to attempt escape.
@@ -658,12 +703,12 @@ def opening_scene():
         p_d("New paths may open as Adari agents prove themselves “loyal.”")
         p_d("Perhaps, even now, you are paving the way...")
         p_d("...for future Adari to serve as Imperial bodyguards.")
-        p_d("Who knows what might become possible then?\n")
+        p_d("Who knows what might happen then?\n")
     if not game["under_duress"]:  # Explaining the accompanying guards.
         p_d("The Prefect calls her Runeguards from outside.")
         p_d("They line up on either side of you.")
         p_d("“For your safety, Adjunct,” she murmurs.")
-        p_d("It seems you’ll be under more scrutiny from now on.")
+        p_d("Apparently, you’ll be under more scrutiny from now on.")
         p_d("With that, it seems, your audience is at an end.\n")
     pause()
     p_d("The Runeguards escort you home.")
@@ -869,7 +914,7 @@ def governor_arrives():
                 p_d("She ignores this attempt at redirection.")
             p_d("“Your role is to tell the Governor about the Adari.")
             p_d("Or so I assume. You don’t have to dress like one.")
-            p_d("But no matter. He’ll be here soon.")
+            p_d("But no matter. He’ll be here soon.”")
         else:
             p_d("Seeing your clothing, the Prefect stares in disbelief.")
             p_d("“What’s the meaning of this preposterous costume?”")
@@ -904,16 +949,13 @@ def governor_arrives():
         if knife_uniform_answer == "1":  # Acquiesce.
             p_d("“I do wish,” she says. “Hand it over, Adjunct.”")
             game["knife_taken"] = 1
-            game["adari_knife"] = 0
         elif knife_uniform_answer == "2":  # Cite the Governor's safety.
             p_d("“You won’t,” she says. “That’s our job. Hand it over.”")
             game["knife_taken"] = 1
-            game["adari_knife"] = 0
         elif knife_uniform_answer == "3":  # Cite culture.
             p_d("“Irrelevant,” she says. “Hand it over, Adjunct.”")
             game["knife_taken"] = 1
-            game["adari_knife"] = 0
-        elif knife_uniform_answer == "4":  # Ojbect on a technicality.
+        elif knife_uniform_answer == "4":  # Object on a technicality.
             p_d("The Prefect blinks in seeming disbelief. Then she says:")
             p_d("“Code envisages a Khell weapon. Not some trinket.”\n")
             if not game["under_duress"]:
@@ -931,7 +973,6 @@ def governor_arrives():
                 p_d("“You made me force this duty upon you, Adjunct.")
                 p_d("Do not try to teach me the meaning of respect.”\n")
                 game["knife_taken"] = 1
-                game["adari_knife"] = 0
     # Checks for Adari clothing and Adari knife, 1 fewer option vs. uniform
     elif game["adari_outfit"] == 1 and game["adari_knife"] == 1:
         p_d("The Prefect stares at your knife. “You cannot wear that.”\n")
@@ -981,6 +1022,7 @@ def governor_arrives():
     p_d("“Your advisor is an Adjunct,” the Prefect clarifies.")
     p_d("You think you hear a note of fear in her voice.\n")
     p_d("Ekkano simply looks at her.\n")
+    pause()
     p_d("The silence stretches uncomfortably.")
     p_d("At length, the Prefect lowers her head.")
     p_d("“Was an Adjunct,” she murmurs. “But is now a Counsellor.”\n")
@@ -1041,23 +1083,17 @@ def governor_arrives():
         gov_chat_options = [
             "  1. “Thank you, Ekkano.”",
             "  2. “Thank you, Governor.”",
-            "  3. “As it should be.”",
-            "  4. “Far be it from me to take a weapon from the Runeguard.”"]
+            "  3. “Far be it from me to take a weapon from the Runeguard.”"]
         gov_chat_answer = make_choice(gov_chat_options)
         if gov_chat_answer == "1":  # Use Gov name, correct protocol.
             p_d("Waving off your thanks, he turns to leave.")
-            p_d("“With me, Counsellor.”\n")
             p_d("You follow him out.\n")
         elif gov_chat_answer == "2":  # Fail to call Gov by his name.
             p_d("You hear sharp intakes of breath all around you.\n")
             p_d("Ekkano’s gaze turns icy.")
             p_d("“I have the right to my Name. Counsellor.”\n")
             game["offended_gov"] = 1
-        elif gov_chat_answer == "3":  # Be smug.
-            p_d("Out of the corner of your eye, you see the Prefect twitch.")
-            p_d("“Come, Counsellor,” Ekkano says. “There’s much to do.”")
-            p_d("He turns to leave. You follow him out.\n")
-        elif gov_chat_answer == "4":  # Vaguely offer knife back.
+        elif gov_chat_answer == "3":  # Vaguely offer knife back.
             p_d("“They have enough,” he replies. “Come, there’s much to do.”")
             p_d("He turns to leave. You follow him out.\n")
     elif knife_chat_pref:
@@ -1213,7 +1249,7 @@ def cultural_advice():
         p_d("It feels a strange to speak of these things to a Khell.")
         p_d("And not just any Khell, but the Governor of your land.")
         p_d("Yet there’s something oddly freeing about it too.\n")
-        p_d("At length, Ekkano holds up a hand. “Enough.”")
+        p_d("At length, he holds up a hand. “Enough.”")
         p_d("He looks more energized than tired.")
         inc_game_value("trust_gov", 1)
         # Gov trust +1, he learned a lot and enjoyed it
@@ -1222,7 +1258,7 @@ def cultural_advice():
         p_d("But you try not to say too much about any one thing.")
         p_d("You have no idea why he wants any of this.")
         p_d("Until you know more, better to hold back.\n")
-        p_d("At length, Ekkano holds up a hand. “Enough.”")
+        p_d("At length, he holds up a hand. “Enough.”")
         p_d("His eyes are full of thoughts.")
     elif culture_answer == "3":
         p_d("You paint a poignant picture of your people.")
@@ -1237,7 +1273,6 @@ def cultural_advice():
         inc_game_value("trust_gov", 1)
         # Gov trust +1, he's moved and a bit sympathetic
         sentimental_story = True
-        p_d("How do you answer?")
     elif culture_answer == "4":
         p_d("Ekkano has no way of knowing what’s true or false here.")
         p_d("You are quite literally the best source he has.")
@@ -1249,6 +1284,7 @@ def cultural_advice():
         p_d("“It’s hard to make sense of all this. Still, I will persist.”")
     story_message = False
     if sentimental_story:
+        p_d("How do you answer?")
         sentiment_options = [
             "  1. Stand by your portrayal of the Adari.",
             "  2. Acknowledge some artistic license.",
@@ -1291,7 +1327,7 @@ def cultural_advice():
         "  2. Refuse."]
     home_answer = make_choice(home_options)
     if home_answer == "1":
-        p_d("“As you wish, Ekkano.”\n")
+        p_d("“As you wish, Ekkano.”")
         p_d("He nods, then conjures the door open.")
     elif home_answer == "2":
         p_d("“It would be better if I stay at home.”\n")
@@ -1359,7 +1395,7 @@ def cultural_advice():
     p_d("Still, you’re so weary that you lie down at once.")
     p_d("Left alone, you pick up a document...")
     p_d("...wondering if it might hold useful intelligence.")
-    p_d("But, before you can read three sentences, sleep takes you.")
+    p_d("But, before you can read three sentences, sleep takes you.\n")
     pause()
     inc_game_value("checkpoint", 1)
     save_game()
@@ -1378,7 +1414,7 @@ def second_morning():
     p_d(f"For now, {name}, your mission pauses.")
     current_info = game["information"]
     p_d(f"The level of information you gained is: {current_info}.")
-    p_d("Await further developments before you continue.")
+    p_d("Await further developments before you continue.\n")
     decoration()
     # This is the end of current game content.
 
@@ -1496,6 +1532,7 @@ def start_game():
         elif current_checkpoint == 4:
             second_morning()
         else:
+            print("───MISSION START───\n")
             opening_scene()
 
 
