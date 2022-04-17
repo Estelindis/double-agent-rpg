@@ -105,6 +105,31 @@ def p_d(text):
     sleep(delay)
 
 
+def yes_no(question):
+    """
+    Returns true for yes, false for no.
+
+    The "question" parameter is a string (should be a yes/no question)
+    Example of use: print(yes_no("Do you like cake?"))
+    Accepted user input: Yes, yes, Y, y, No, no, N, n.
+    """
+    print(question + " (Y/N):")
+    choice_made = False
+    lines_to_delete = 2
+    answer = ""
+    while not choice_made:
+        answer = get_string("")
+        if answer.lower() == "yes" or answer.lower() == "y":
+            choice_made = True
+            return True
+        if answer.lower() == "no" or answer.lower() == "n":
+            choice_made = True
+            return False
+        delete_line(lines_to_delete)
+        print("It’s a yes or no question.")
+        lines_to_delete = 3
+
+
 def make_choice(choice_list):
     """
     Returns the user's choice from a list of options.
@@ -1384,25 +1409,17 @@ def start_game():
     ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║      \033[38;2;114;117;160m
     ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║      \033[38;2;104;95;143m
     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝\033[0m\n''')
-    play_chosen = False
-    game_declined = False
     # Lets the user choose whether to play the game.
-    while not play_chosen and not game_declined:
-        play_choice = get_string("Agent, do you wish to play? (Y/N):")
-        if play_choice.lower() == "yes" or play_choice.lower() == "y":
-            p_d("Welcome to a game of swords, sorcery, and spies.")
-            play_chosen = True
-        elif play_choice.lower() == "no" or play_choice.lower() == "n":
-            p_d("Acknowledged.")
-            p_d("If you cannot say no, then your yes has no meaning.")
-            p_d("Farewell, Agent.")
-            play_chosen = True
-            game_declined = True
-        else:
-            print("It’s a yes or no question.")
-    name_chosen = False
+    play_chosen = yes_no("Agent, do you wish to play?")
+    if play_chosen:
+        p_d("Welcome to a game of swords, sorcery, and spies.")
+    else:
+        p_d("Acknowledged.")
+        p_d("If you cannot say no, then your yes has no meaning.")
+        p_d("Farewell, Agent.")
     # Requests a username, applying various checks
-    while not name_chosen and not game_declined:
+    name_chosen = False
+    while play_chosen and not name_chosen:
         input_n = get_string("Agent, what is your name?")
         if input_n:
             # If name is all numbers, skip capitalization check
@@ -1410,14 +1427,12 @@ def start_game():
                 game["name"] = input_n
             # If name's first letter(s) not capitalized, confirm
             elif not input_n.istitle():
-                cap_n = " ".join(bit.capitalize() for bit in input_n.split())
-                cap_ch = get_string(f"Render “{input_n}” as “{cap_n}”? (Y/N):")
-                if cap_ch.lower() == "yes" or cap_ch.lower() == "y":
+                cap_n = " ".join(str.capitalize() for str in input_n.split())
+                cap_chosen = yes_no(f"Render “{input_n}” as “{cap_n}”?")
+                if cap_chosen:
                     game["name"] = cap_n
-                elif cap_ch.lower() == "no" or cap_ch.lower() == "n":
-                    game["name"] = input_n
                 else:
-                    print("It’s a yes or no question.")
+                    game["name"] = input_n
             else:
                 game["name"] = input_n
         if game["name"]:
@@ -1427,6 +1442,7 @@ def start_game():
     # generate a full set of savegame data for the current user.
     # Current username is sought in the name column of the savegame sheet.
     savegame_found = False
+    new_game = False
     if name_chosen:
         username = game["name"]
         savegame_found = check_game(username)
@@ -1444,46 +1460,32 @@ def start_game():
             load_game()
             p_d(f"Welcome back, {username}...")
     else:
-        if not game_declined:
+        if play_chosen:
             print("")
-            new_savegame()  # Creates a new savegame entry for the user
+            new_game = True
             p_d(f"{name}, you come to the crossroads of your life.")
             p_d("Tread carefully or boldly. See where your steps take you.\n")
-    read_brief = False
-    speed_set = False
-    while not speed_set and not game_declined:
-        speed_choice = get_string("Do you wish to change text speed? (Y/N):")
-        if speed_choice.lower() == "yes" or speed_choice.lower() == "y":
+    if play_chosen:
+        speed_change = yes_no("Do you wish to change text speed?")
+        if speed_change:
             change_speed()
-            speed_set = True
-        elif speed_choice.lower() == "no" or speed_choice.lower() == "n":
-            p_d("Standard speed accepted.\n")
-            speed_set = True
         else:
-            print("It’s a yes or no question.")
-    read_brief = False
-    while not read_brief and not game_declined:
-        brief_choice = get_string("Do you wish to read a briefing? (Y/N):")
-        if brief_choice.lower() == "yes" or brief_choice.lower() == "y":
+            p_d("Current speed accepted.\n")
+    if play_chosen:
+        read_brief = yes_no("Do you wish to read a briefing?")
+        if read_brief:
             show_briefing()
-            read_brief = True
-        elif brief_choice.lower() == "no" or brief_choice.lower() == "n":
-            read_brief = True
+        else:
             p_d("Briefing declined.\n")
-        else:
-            print("It’s a yes or no question.")
-    read_gameplay = False
-    while not read_gameplay and not game_declined:
-        info_choice = get_string("Do you wish to know how to play? (Y/N):")
-        if info_choice.lower() == "yes" or info_choice.lower() == "y":
+    if play_chosen:
+        read_gameplay = yes_no("Do you wish to know how to play?")
+        if read_gameplay:
             show_how_to_play()
-            read_gameplay = True
-        elif info_choice.lower() == "no" or info_choice.lower() == "n":
-            read_gameplay = True
-            p_d("Information declined.\n")
         else:
-            print("It’s a yes or no question.")
-    if not game_declined:
+            p_d("Information declined.\n")
+    if play_chosen and new_game:
+        new_savegame()  # Creates a new savegame entry for the user
+    if play_chosen:
         current_checkpoint = game["checkpoint"]
         if current_checkpoint == 1:
             first_morning()
