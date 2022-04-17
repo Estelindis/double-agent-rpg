@@ -20,8 +20,8 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open("double_agent")
-SAVES = SHEET.worksheet("savegame")
+SHEET = GSPREAD_CLIENT.open("double-agent-rpg")
+SAVES = SHEET.worksheet("savegames")
 
 # The dictionary "game" stores all persistent game data.
 # The value of "name" is a string.
