@@ -686,38 +686,53 @@ def opening_scene():
             p_d("“You’re telling me to obey you specifically,” you reply.")
             p_d("“But the Governor is chosen by Xeth, Emperor of the Khell...")
             p_d("...the Zhenko, the Varth, the Czuyd, the Taggadh...”")
-            p_d("The Imperium has dozens of dominions.")
+            p_d("The Khell Imperium has dozens of dominions.")
             p_d("The list is commonly abbreviated, but you name them all...")
             p_d("...eventually finishing with the Adari.")
             p_d("The Prefect doesn’t interrupt this extravagance.\n")
             p_d("You go on: “If the Governor asks what we just discussed...")
-            p_d("...am I to hide it from him? To lie, or tell a half-truth?")
-            p_d("Would that not be an act of defiance and disloyalty?")
+            p_d("...am I to hide it from him? Lie, or tell a half-truth?")
+            p_d("Wouldn’t that be an act of defiance and disloyalty?")
             p_d("If I refused to carry out even one of his orders...")
-            p_d("...would I not deserve death?” You pause.")
+            p_d("...wouldn’t I deserve death?” You pause.")
             p_d("“Against that, Prefect, by all means let me lose my career.”")
+            # This extreme zeal regains 2 points of Prefect's Trust.
+            # You are now only 1 point behind the trust
+            # of someone who obeyed her immediately.
+            # In both scenarios, she believes you loyal.
+            # But in one, she's gratified that you believed her straight away.
+            inc_game_value("trust_pref", 2)
             print("")
             pause()
             p_d("She curls her fingers into a fist.")
-            p_d("Then, dragging her words, she says:")
-            p_d("“The Governor’s not the only one appointed by decree.")
-            p_d("My blade was granted by Xeth, Emperor of the Khell...")
-            p_d("...and all their subjects. He gave me orders too.")
-            p_d("What I tell you comes from his voice.”")
-            p_d("Do you believe her?")
+            p_d("Then, dragging out her words, she says:")
+            p_d("“My blade was granted by Xeth, Emperor of the Khell...")
+            p_d("...and their subjects. So were my orders.")
+            p_d("Obey me, Adjunct. And thus obey our Emperor, Xeth.”\n")
+            inc_game_value("information", 1)
+            p_d("[Information has increased by 1.]")
+            p_d(f"[The new score is: {game['information']}.]\n")
+            p_d("You’ve just learned something important.")
+            p_d("Either the Prefect is under the Emperor’s direct command.")
+            p_d("Or she’s willing to lie about a very serious thing.")
+            p_d("What do you say?")
             belief_options = [
-                "  1. Yes.",
-                "  2. No.",
-                "  3. You’re not sure."
+                "  1. “I believe you.”",
+                "  2. “The punishment for lying about this is... gruesome.”"
                 ]
             belief_answer = make_choice(belief_options)
             if belief_answer == "1":
                 p_d("")
             elif belief_answer == "2":
-                p_d("")
-            elif belief_answer == "3":
-                p_d("")
-            p_d("")
+                p_d("“Rightly so,” she says immediately. “I’m not lying.”")
+                p_d("What do you say next?")
+                belief_2_options = [
+                    "  1. “Of course. I believe you.”",
+                    "  2. “That’s between you and the Imperium.”"
+                    ]
+                belief_2_answer = make_choice(belief_2_options)
+                if belief_2_answer == "2":
+                    p_d("")
             p_d("")
             p_d("")
             p_d("")
@@ -1277,8 +1292,7 @@ def cultural_advice():
         # Info gain +1
         inc_game_value("information", 1)
         p_d("[Information has increased by 1.]")
-        new_score = game["information"]
-        p_d(f"[The new score is: {new_score}.]")
+        p_d(f"[The new score is: {game['information']}.]")
         print("")
     elif scope_answer == "3":
         p_d("His face is unreadable. “I have my reasons.”")
@@ -1416,8 +1430,7 @@ def cultural_advice():
         # Info gain +1
         inc_game_value("information", 1)
         p_d("[Information has increased by 1.]")
-        new_info_score = game["information"]
-        p_d(f"[The new score is: {new_info_score}.]")
+        p_d(f"[The new score is: {game['information']}.]")
         print("")
         p_d("Then the Governor seems to realize you haven’t left.")
         p_d("Meeting your eyes briefly, he gestures for you to go.")
@@ -1466,8 +1479,7 @@ def second_morning():
     p_d("")
     decoration()
     p_d(f"For now, {name}, your mission pauses.")
-    current_info = game["information"]
-    p_d(f"The level of information you gained is: {current_info}.")
+    p_d(f"The level of information you gained is: {game['information']}.")
     p_d("Await further developments before you continue.\n")
     decoration()
     # This is the end of current game content.
