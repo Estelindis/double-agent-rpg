@@ -292,7 +292,7 @@ def new_savegame():
 
     Use of enumerate from Mike Hordecki:
     https://stackoverflow.com/a/522578/18794218
-    Loading animation inspired by AKX, LPby, and Warren:
+    Animation inspired by AKX, LPby, and Warren:
     https://stackoverflow.com/a/7039175/18794218
     """
     progress_bar = [
@@ -360,6 +360,8 @@ def save_game():
     In that case, default starting values are written to the sheet.
     Use of enumerate from Mike Hordecki:
     https://stackoverflow.com/a/522578/18794218
+    Animation inspired by AKX, LPby, and Warren:
+    https://stackoverflow.com/a/7039175/18794218
     """
     progress_bar = [
         "─•✧✵✧•───────────",
@@ -427,7 +429,7 @@ def show_briefing():
     p_d("However, your career has advanced slowly.")
     p_d("You've been limited to serving lesser Khell.\n")
     p_d("Until now.\n")
-    p_d("BRIEFING FINISHED.\n")
+    p_d("───BRIEFING FINISHED───\n")
     pause()
 
 
@@ -463,7 +465,7 @@ def show_how_to_play():
     p_d("If either form of Trust reaches 0, there will be... consequences.\n")
     p_d("If you survive to the end of your mission...")
     p_d("...these stats will determine its possible outcomes.\n")
-    p_d("INFORMATION FINISHED.\n")
+    p_d("───INFORMATION FINISHED───\n")
     pause()
 
 
@@ -637,7 +639,8 @@ def opening_scene():
         print("What do you do?")  # Your career is threatened
         spy_refuse_final_options = [
             "  1. Change you mind and accept.",
-            "  2. Refuse nonetheless."
+            "  2. Refuse, because you don’t want to do it.",
+            "  3. Refuse, because you think she’s testing you."
             ]
         spy_refuse_final_answer = make_choice(spy_refuse_final_options)
         if spy_refuse_final_answer == "1":  # Accept after all.
@@ -646,7 +649,7 @@ def opening_scene():
             p_d("Whatever her game is, you’ll have to play it.")
             p_d("“Forgive me, Prefect. I misspoke. I’ll do as you command.”\n")
             p_d("“See that you do,” she says. “I’ll be watching you.”\n")
-        if spy_refuse_final_answer == "2":  # Continue to refuse.
+        elif spy_refuse_final_answer == "2":  # Continue to refuse.
             inc_game_value("trust_pref", -1)  # Prefect's Trust -1
             game["under_duress"] = 1
             # From now on, Prefect's Trust can only go down, not up
@@ -668,6 +671,57 @@ def opening_scene():
             p_d("But my reach is vast. If you think only you will suffer...")
             p_d("...for this disobedience, you can think again.”")
             p_d("She’ll kill you if you don’t do this. And not just you.\n")
+        elif spy_refuse_final_answer == "3":  # Suspect a loyalty test.
+            p_d("For an Adari, disloyalty means death.")
+            p_d("Yet that’s precisely what she’s asking from you.")
+            p_d("To obey a Khell in public, yet report on him in secret.")
+            p_d("And not just any Khell but the Emperor’s chosen.")
+            p_d("How could she trust anyone who agreed to this?")
+            p_d("No. It must be a test. You’ll prove yourself by refusing.\n")
+            p_d("“Before the vast Imperium, my career is a small thing.")
+            p_d("Better I lose it than stain myself by disobeying the Khell.”")
+            pause()
+            p_d("The Prefect’s brows contort in frustrated rage.")
+            p_d("“I’m telling you to obey. And you’re refusing.”\n")
+            p_d("“You’re telling me to obey you specifically,” you reply.")
+            p_d("“But the Governor is chosen by Xeth, Emperor of the Khell...")
+            p_d("...the Zhenko, the Varth, the Czuyd, the Taggadh...”")
+            p_d("The Imperium has dozens of dominions.")
+            p_d("The list is commonly abbreviated, but you name them all...")
+            p_d("...eventually finishing with the Adari.")
+            p_d("The Prefect doesn’t interrupt this extravagance.\n")
+            p_d("You go on: “If the Governor asks what we just discussed...")
+            p_d("...am I to hide it from him? To lie, or tell a half-truth?")
+            p_d("Would that not be an act of defiance and disloyalty?")
+            p_d("If I refused to carry out even one of his orders...")
+            p_d("...would I not deserve death?” You pause.")
+            p_d("“Against that, Prefect, by all means let me lose my career.”")
+            print("")
+            pause()
+            p_d("She curls her fingers into a fist.")
+            p_d("Then, dragging her words, she says:")
+            p_d("“The Governor’s not the only one appointed by decree.")
+            p_d("My blade was granted by Xeth, Emperor of the Khell...")
+            p_d("...and all their subjects. He gave me orders too.")
+            p_d("What I tell you comes from his voice.”")
+            p_d("Do you believe her?")
+            belief_options = [
+                "  1. Yes.",
+                "  2. No.",
+                "  3. You’re not sure."
+                ]
+            belief_answer = make_choice(belief_options)
+            if belief_answer == "1":
+                p_d("")
+            elif belief_answer == "2":
+                p_d("")
+            elif belief_answer == "3":
+                p_d("")
+            p_d("")
+            p_d("")
+            p_d("")
+            p_d("")
+            p_d("")
     if game["under_duress"]:
         print("What do you do?")  # Your life is threatened
         spy_try_not_to_die_options = [
