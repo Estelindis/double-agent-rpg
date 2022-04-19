@@ -491,7 +491,7 @@ def opening_scene():
     p_d("This building was once the seat of Adari democracy.")
     p_d("One day, you hope, it will be again.\n")
     p_d("When you arrive, the Governor is nowhere to be seen.")
-    p_d("Instead, the Prefect of the Runeguard awaits you.\n")
+    p_d("Instead, the Prefect of the Runeguard awaits you.")
     p_d("The Runeguard protects the Emperor and his Governors.")
     p_d("Bestowed with imbued magic items by the sorcerers...")
     p_d("...Runeguards don’t need brute strength to be deadly.")
@@ -715,7 +715,8 @@ def opening_scene():
             p_d("[Information has increased by 1.]")  # info gain
             p_d(f"[The new score is: {game['information']}.]\n")
             p_d("You’ve just learned something important.")
-            p_d("Either the Prefect is under the Emperor’s direct command.")
+            p_d("Either the Prefect is under the Emperor’s direct command...")
+            p_d("...bypassing the Governor on some hidden matters.")
             p_d("Or she’s willing to commit to a treasonous lie.")
             p_d("What do you say?")
             belief_options = [
@@ -754,13 +755,11 @@ def opening_scene():
                     p_d("So don’t concern yourself with my fate.")
                     p_d("Think only on the source of my orders.")
                     p_d("And how best you can obey.”")
-                    p_d("By her tone, it seems your audience is at an end.")
     if believe_prefect:  # You said you believe the Emp. is ordering the Pref.
         p_d("“Good,” she says. “I’m glad your initial reluctance...")
         p_d("...was for an appropriate reason. But no more hesitation.")
         p_d("Now you know whose orders you ultimately follow...")
         p_d("...I expect your full obedience.”")
-        p_d("By her tone, it seems your audience is at an end.")
     if game["under_duress"]:  # The Prefect is forcing you to obey.
         print("What do you do?")  # Your life is now under threat.
         spy_try_not_to_die_options = [
