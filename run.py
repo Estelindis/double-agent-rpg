@@ -46,7 +46,8 @@ game = {
     "adari_outfit": 0,
     "khell_uniform": 0,
     "knife_taken": 0,
-    "offended_gov": 0
+    "offended_gov": 0,
+    "questioned_pref": 0
 }
 
 
@@ -635,6 +636,7 @@ def opening_scene():
             inc_game_value("trust_pref", -1)  # Prefect's Trust -1
             p_d("She sighs. “What a shame. I hope you understand...")
             p_d("...your career is over if you refuse.”\n")
+    believe_prefect = False
     if game["trust_pref"] == 3:
         print("What do you do?")  # Your career is threatened
         spy_refuse_final_options = [
@@ -710,11 +712,11 @@ def opening_scene():
             p_d("...and their subjects. So were my orders.")
             p_d("Obey me, Adjunct. And thus obey our Emperor, Xeth.”\n")
             inc_game_value("information", 1)
-            p_d("[Information has increased by 1.]")
+            p_d("[Information has increased by 1.]")  # info gain
             p_d(f"[The new score is: {game['information']}.]\n")
             p_d("You’ve just learned something important.")
             p_d("Either the Prefect is under the Emperor’s direct command.")
-            p_d("Or she’s willing to lie about a very serious thing.")
+            p_d("Or she’s willing to commit to a treasonous lie.")
             p_d("What do you say?")
             belief_options = [
                 "  1. “I believe you.”",
@@ -722,23 +724,45 @@ def opening_scene():
                 ]
             belief_answer = make_choice(belief_options)
             if belief_answer == "1":
-                p_d("")
+                believe_prefect = True
             elif belief_answer == "2":
-                p_d("“Rightly so,” she says immediately. “I’m not lying.”")
+                p_d("“Rightly so,” she says. “I’m not lying.”")
                 p_d("What do you say next?")
                 belief_2_options = [
                     "  1. “Of course. I believe you.”",
                     "  2. “That’s between you and the Imperium.”"
                     ]
                 belief_2_answer = make_choice(belief_2_options)
-                if belief_2_answer == "2":
-                    p_d("")
-            p_d("")
-            p_d("")
-            p_d("")
-            p_d("")
-    if game["under_duress"]:
-        print("What do you do?")  # Your life is threatened
+                if belief_2_answer == "1":
+                    believe_prefect = True
+                elif belief_2_answer == "2":
+                    p_d("She blinks. “Are you questioning my loyalty?”")
+                    p_d("Her voice is dangerously soft.\n")
+                    p_d("You shake your head. “Not at all, Prefect.")
+                    p_d("One in my position simply cannot know the truth.")
+                    p_d("If you’re not lying, may my actions help you.")
+                    p_d("If you are... may justice find you.”")
+                    p_d("You keep her gaze, the very picture of zeal.\n")
+                    # If she was purely neutral, this should gain you trust
+                    # However, she's hurt at not being actively believed
+                    # This hurt makes her trust you less
+                    inc_game_value("questioned_pref", 1)
+                    inc_game_value("trust_pref", -1)  # trust lost
+                    p_d("For a moment, the Prefect seems unsettled.")
+                    p_d("Then she rallies.")
+                    p_d("“Truth is on my side. I do not fear justice.")
+                    p_d("So don’t concern yourself with my fate.")
+                    p_d("Think only on the source of my orders.")
+                    p_d("And how best you can obey.”")
+                    p_d("By her tone, it seems your audience is at an end.")
+    if believe_prefect:  # You said you believe the Emp. is ordering the Pref.
+        p_d("“Good,” she says. “I’m glad your initial reluctance...")
+        p_d("...was for an appropriate reason. But no more hesitation.")
+        p_d("Now you know whose orders you ultimately follow...")
+        p_d("...I expect your full obedience.”")
+        p_d("By her tone, it seems your audience is at an end.")
+    if game["under_duress"]:  # The Prefect is forcing you to obey.
+        print("What do you do?")  # Your life is now under threat.
         spy_try_not_to_die_options = [
             "  1. Capitulate, to save yourself and others.",
             "  2. Pretend to agree, but flee at the first oppportunity."
