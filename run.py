@@ -47,7 +47,8 @@ game = {
     "khell_uniform": 0,
     "knife_taken": 0,
     "offended_gov": 0,
-    "questioned_pref": 0
+    "questioned_pref": 0,
+    "basement_info": 0
 }
 
 
@@ -1450,8 +1451,7 @@ def cultural_advice():
         p_d("But real magic, the kind the Khell use to conquer...")
         p_d("...is utterly silent, known only by its effects.")
         p_d("For a moment, you watch, mentally noting what you see.\n")
-        # Info gain +1
-        inc_game_value("information", 1)
+        inc_game_value("information", 1)  # Info gain +1
         p_d("[Information has increased by 1.]")
         p_d(f"[The new score is: {game['information']}.]")
         print("")
@@ -1482,10 +1482,25 @@ def cultural_advice():
     p_d("Before long, you are brought to a dusty basement room.")
     p_d("Boxes of old documents have been hastily piled to one side.")
     p_d("For your comfort, there is only a camp bed and a basin.")
-    p_d("Still, you’re so weary that you lie down at once.")
-    p_d("Left alone, you pick up a document...")
-    p_d("...wondering if it might hold useful intelligence.")
-    p_d("But, before you can read three sentences, sleep takes you.\n")
+    if posture_answer == "1":  # After sitting, you have energy to read a bit
+        p_d("Undignified lodgings, yet they suit you well.")
+        p_d("You do your best work when you’re beneath notice.")
+        p_d("As such, you take a box of records and start reading.")
+        p_d("Most of the data is unimportant, obsolete, or both.")
+        p_d("Yet some of it provides vital context for old intelligence...")
+        p_d("...that had previously seemed worthless.")
+        inc_game_value("information", 1)  # Info gain +1
+        p_d("[Information has increased by 1.]")
+        p_d(f"[The new score is: {game['information']}.]")
+        inc_game_value("basement_info", 1)   # Got some info from basement docs
+        print("")
+        p_d("Carefully, you return everything to its original place.")
+        p_d("When you lie down, sleep takes you at once.\n")
+    elif posture_answer == "2":  # You're exhausted from standing for hours
+        p_d("Still, you’re so weary that you lie down at once.")
+        p_d("Left alone, you pick up a document...")
+        p_d("...wondering if it might hold useful intelligence.")
+        p_d("But, before you can read three sentences, sleep takes you.\n")
     pause()
     inc_game_value("checkpoint", 1)
     save_game()
