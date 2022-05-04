@@ -1487,15 +1487,14 @@ def cultural_advice():
         p_d("You do your best work when you’re beneath notice.")
         p_d("As such, you take a box of records and start reading.")
         p_d("Most of the data is unimportant, obsolete, or both.")
-        p_d("Yet some of it provides vital context for old intelligence...")
-        p_d("...that had previously seemed worthless.")
+        p_d("Yet some of it provides vital context for old intelligence.")
         inc_game_value("information", 1)  # Info gain +1
         p_d("[Information has increased by 1.]")
         p_d(f"[The new score is: {game['information']}.]")
         inc_game_value("basement_info", 1)   # Got some info from basement docs
         print("")
-        p_d("Carefully, you return everything to its original place.")
-        p_d("When you lie down, sleep takes you at once.\n")
+        p_d("Satisfied, you return everything to its original place.")
+        p_d("Then you lie down, and sleep takes you at once.\n")
     elif posture_answer == "2":  # You're exhausted from standing for hours
         p_d("Still, you’re so weary that you lie down at once.")
         p_d("Left alone, you pick up a document...")
