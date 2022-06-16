@@ -562,7 +562,7 @@ def opening_scene():
         p_d("As we are commanded, so we all must obey.”")
         p_d("She won’t take no for an answer.\n")
     p_d("For a moment, in silence, you reflect on your new orders.")
-    p_d("Working at a Governor’s side will be dangerous.")
+    p_d("Working at a Governor’s side will be risky.")
     p_d("But it’s an unprecedented chance to gain vital information.\n")
     p_d("Then the Prefect says: “There is... one other thing.”\n")
     pause()
@@ -739,7 +739,7 @@ def opening_scene():
                     believe_prefect = True
                 elif belief_2_answer == "2":
                     p_d("She blinks. “Are you questioning my loyalty?”")
-                    p_d("Her voice is dangerously soft.\n")
+                    p_d("Her voice is ominously soft.\n")
                     p_d("You shake your head. “Not at all, Prefect.")
                     p_d("One in my position simply cannot know the truth.")
                     p_d("If you’re not lying, may my actions help you.")
@@ -751,8 +751,7 @@ def opening_scene():
                     inc_game_value("questioned_pref", 1)
                     inc_game_value("trust_pref", -1)  # trust lost
                     p_d("For a moment, the Prefect seems unsettled.")
-                    p_d("Then she rallies.")
-                    p_d("“Truth is on my side. I do not fear justice.")
+                    p_d("Then she rallies. “I needn’t fear justice.")
                     p_d("So don’t concern yourself with my fate.")
                     p_d("Think only on the source of my orders.")
                     p_d("And how best you can obey.”")
@@ -1116,8 +1115,7 @@ def governor_arrives():
     p_d("You think you hear a note of fear in her voice.\n")
     p_d("Ekkano simply looks at her.\n")
     pause()
-    p_d("The silence stretches uncomfortably.")
-    p_d("At length, the Prefect lowers her head.")
+    p_d("The silence stretches. Then the Prefect lowers her head.")
     p_d("“Was an Adjunct,” she murmurs. “But is now a Counsellor.”\n")
     knife_chat_guard = False
     knife_chat_gov = False
@@ -1250,7 +1248,7 @@ def cultural_advice():
     Story content in which the Governor seeks cultural advice
     """
     print("┌───── •✧✵✧• ─────┐")
-    print("DAY 1: NOON, STILL")
+    print(" DAY 1: AFTERNOON")
     p_d("└───── •✧✵✧• ─────┘\n")
     p_d("As far as you know, Ekkano has never been in Adar...")
     p_d("...let alone in the Governor’s Palace.")
@@ -1479,6 +1477,7 @@ def cultural_advice():
     p_d("Your request for a room thus elicits surprise.")
     p_d("But no one wishes to disobey the Governor.")
     p_d("(Perhaps you can find ways to leverage that.)\n")
+    pause()
     p_d("Before long, you are brought to a dusty basement room.")
     p_d("Boxes of old documents have been hastily piled to one side.")
     p_d("For your comfort, there is only a camp bed and a basin.")
