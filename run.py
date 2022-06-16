@@ -28,6 +28,9 @@ SAVES = SHEET.worksheet("savegames")
 # The value of "text_speed" is a float.
 # The values of the other keys are ints.
 # If these data types are changed, the savegame system may break.
+# Add any new key-value pairs to the end of the dictionary.
+# Do not insert new pairs between existing pairs.
+# This ensures backwards compatibility with old saves.
 game = {
     "name": "",
     "text_speed": 2.0,
