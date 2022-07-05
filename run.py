@@ -816,7 +816,6 @@ def opening_scene():
     p_d("When you get home, the Runeguards take positions outside.")
     p_d("Anyone wanting to get in or out will have to contend with them.")
     p_d("While they keep vigil, you prepare for what lies ahead.\n")
-    pause()
     p_d("Some agents have emergency channels to Adar’s hidden leaders...")
     p_d("...precious Echo Stones repurposed for modern times.")
     p_d("But your rank isn’t high enough for that.")
