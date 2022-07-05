@@ -791,7 +791,7 @@ def opening_scene():
         p_d("If you perform loyally and well, in a generation or two...")
         p_d("...perhaps members of your kind could even join the Runeguard.”")
         print("")
-        p_d("You disguise your surprise at her suggestion.")
+        p_d("You disguise your reaction to her bold suggestion.")
         p_d("Members of the Runeguard do not come from subject nations.")
         p_d("That “honour” is kept for the Khell.")
         p_d("Still, Adar is the first nation to capitulate without a fight.")
