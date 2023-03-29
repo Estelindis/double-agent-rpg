@@ -75,7 +75,8 @@ def inc_game_value(key_name, value):
 
 
 def get_string(question):
-    """Returns a non-empty string, input by the user.
+    """
+    Returns a non-empty string, input by the user.
 
     Runs a while loop, using the "question" parameter to seek user input.
     If an empty string is given (i.e. the user just presses ENTER),
@@ -1508,8 +1509,8 @@ def cultural_advice():
         p_d("Then you lie down, and sleep takes you at once.\n")
     elif posture_answer == "2":  # You're exhausted from standing for hours
         p_d("Still, you’re so weary that you lie down at once.")
-        p_d("Left alone, you pick up a document,")
-        p_d("wondering if it might hold useful intelligence.")
+        p_d("For bedtime reading, you grab the closest document to hand.")
+        p_d("Perhaps it could hold useful intelligence.")
         p_d("But, before you can read three sentences, sleep takes you.\n")
     pause()
     inc_game_value("checkpoint", 1)
